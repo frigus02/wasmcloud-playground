@@ -9,12 +9,22 @@ keys:
 .PHONY: build
 build: keys ## Debug build
 	cargo build
-	wascap sign $(DEBUG)/api.wasm $(DEBUG)/api_signed.wasm -i $(KEYDIR)/account.nk -u $(KEYDIR)/module-api.nk -s -n api
+	wash claims sign \
+		--issuer $(KEYDIR)/account.nk \
+		--subject $(KEYDIR)/module-api.nk \
+		--http_server \
+		$(DEBUG)/api.wasm \
+		--name api
 
 .PHONY: release
 release: keys ## Release build
 	cargo build --release
-	wascap sign $(RELEASE)/api.wasm $(RELEASE)/api_signed.wasm -i $(KEYDIR)/account.nk -u $(KEYDIR)/module-api.nk -s -n api
+	wash claims sign \
+		--issuer $(KEYDIR)/account.nk \
+		--subject $(KEYDIR)/module-api.nk \
+		--http_server \
+		$(RELEASE)/api.wasm \
+		--name api
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/

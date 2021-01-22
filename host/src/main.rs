@@ -2,8 +2,11 @@ use std::collections::HashMap;
 use wascc_host::{Actor, Host, NativeCapability};
 
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
-    let _ = env_logger::try_init();
+    env_logger::init();
     let host = Host::new();
+
+    // TODO: try host.apply_manifest() instead of manually loading actors and capabilities
+
     host.add_actor(Actor::from_file(
         "../../api/target/wasm32-unknown-unknown/debug/api_signed.wasm",
     )?)?;
