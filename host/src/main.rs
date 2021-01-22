@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use wascc_host::{Actor, Host, NativeCapability};
+use wascc_httpsrv::HttpServerProvider;
 
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
@@ -8,16 +9,16 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
     // TODO: try host.apply_manifest() instead of manually loading actors and capabilities
 
     host.add_actor(Actor::from_file(
-        "../../api/target/wasm32-unknown-unknown/debug/api_signed.wasm",
-    )?)?;
-    host.add_native_capability(NativeCapability::from_file(
-        "../../wascc/wascc-host/examples/.assets/libwascc_httpsrv.so",
-        None,
+        "../api/target/wasm32-unknown-unknown/debug/api_s.wasm",
     )?)?;
 
+    let http_server_provider = NativeCapability::from_instance(HttpServerProvider::new(), None)?;
+    let http_server_cap_id = &http_server_provider.descriptor().id.clone();
+    host.add_native_capability(http_server_provider)?;
+
     host.set_binding(
-        "MCYQSR5WIOABHZP6Z3SG67REVC2QDCYAHUVXHUSSLFWNO55OZ3O33MKR",
-        "wascc:http_server",
+        "MC5PD6ZD4WAIWQW5E6U5RHZBR2PJAZ5KSAKDOGHECKREUYR6HWKFFCBO",
+        http_server_cap_id,
         None,
         generate_port_config(8081),
     )?;
