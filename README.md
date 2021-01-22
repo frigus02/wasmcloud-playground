@@ -1,4 +1,4 @@
-# wasmCloud TodoMVC
+# wasmCloud Playground
 
 ## Required tools
 
@@ -8,16 +8,21 @@
   rustup target add wasm33-unknown-unknown
   ```
 
-- We need `nk` and `wascap` to generate keys and sign our modules:
+- We need `wash` (the WebAssembly shell) to generate keys and sign our modules:
 
   ```
   cargo install wash-cli
   ```
 
-## Initial setup
+## Start the app
 
-- Generate keys
+```sh
+# 1. Build the API
+cd api && make build
 
-  ```
-  make keys
-  ```
+# 2. Start the host
+cd host && make run
+
+# 3. Call the API
+curl localhost:8081
+```
