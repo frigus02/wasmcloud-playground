@@ -8,17 +8,17 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
 
     // TODO: try host.apply_manifest() instead of manually loading actors and capabilities
 
-    host.add_actor(Actor::from_file(
-        "../api/target/wasm32-unknown-unknown/debug/api_s.wasm",
-    )?)?;
+    let actor = Actor::from_file("../api/target/wasm32-unknown-unknown/debug/api_s.wasm")?;
+    let actor_pub_key = actor.public_key();
+    host.add_actor(actor)?;
 
-    let http_server_provider = NativeCapability::from_instance(HttpServerProvider::new(), None)?;
-    let http_server_cap_id = &http_server_provider.descriptor().id.clone();
-    host.add_native_capability(http_server_provider)?;
+    let http_server_cap = NativeCapability::from_instance(HttpServerProvider::new(), None)?;
+    let http_server_cap_id = http_server_cap.descriptor().id.clone();
+    host.add_native_capability(http_server_cap)?;
 
     host.set_binding(
-        "MC5PD6ZD4WAIWQW5E6U5RHZBR2PJAZ5KSAKDOGHECKREUYR6HWKFFCBO",
-        http_server_cap_id,
+        &actor_pub_key,
+        &http_server_cap_id,
         None,
         generate_port_config(8081),
     )?;

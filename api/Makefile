@@ -15,6 +15,7 @@ build: keys ## Debug build
 		--http_server \
 		$(DEBUG)/api.wasm \
 		--name api
+	wash claims inspect $(DEBUG)/api_s.wasm
 
 .PHONY: release
 release: keys ## Release build
@@ -25,6 +26,7 @@ release: keys ## Release build
 		--http_server \
 		$(RELEASE)/api.wasm \
 		--name api
+	wash claims inspect $(RELEASE)/api_s.wasm
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/
