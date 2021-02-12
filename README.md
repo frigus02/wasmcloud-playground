@@ -11,7 +11,7 @@
 - We need `wash` (the WebAssembly shell) to generate keys and sign our modules:
 
   ```
-  cargo install wash-cli
+  cargo install --git https://github.com/wasmcloud/wash --tag v0.1.18
   ```
 
 ## Start the app

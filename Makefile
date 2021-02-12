@@ -9,14 +9,14 @@ keys: ## Generate keys
 	wash keys gen account -o json >$@
 
 .keys/account.nk: .keys/account.json
-	jq -r '.seed' <$< | tr -d '\n' >$@
+	jq -r '.seed' <$< >$@
 
 .keys/module-api.json:
 	@mkdir -p .keys
 	wash keys gen module -o json >$@
 
 .keys/module-api.nk: .keys/module-api.json
-	jq -r '.seed' <$< | tr -d '\n' >$@
+	jq -r '.seed' <$< >$@
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/
