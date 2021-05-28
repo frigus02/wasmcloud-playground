@@ -8,7 +8,8 @@ build: ## Debug build
 	wash claims sign \
 		$(DEBUG)/todo.wasm \
 		--name todo \
-		--call-alias todo
+		--call-alias todo \
+		--keyvalue
 	wash claims inspect $(DEBUG)/todo_s.wasm
 
 .PHONY: release
@@ -17,7 +18,8 @@ release: ## Release build
 	wash claims sign \
 		$(RELEASE)/todo.wasm \
 		--name todo \
-		--call-alias todo
+		--call-alias todo \
+		--keyvalue
 	wash claims inspect $(RELEASE)/todo_s.wasm
 
 .PHONY: help

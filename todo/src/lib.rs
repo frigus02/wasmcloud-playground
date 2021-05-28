@@ -29,9 +29,13 @@ fn handle_create(title: String) -> HandlerResult<u32> {
 fn handle_list(_dummy: bool) -> HandlerResult<Vec<todo::Todo>> {
     let store = kv::default();
     let res_count = store.get(COUNT.into())?;
-    let count = res_count.value.parse::<u32>()?;
+    let count = if res_count.exists {
+        res_count.value.parse::<u32>()?
+    } else {
+        0
+    };
     let mut todos = Vec::new();
-    for id in 0..=count {
+    for id in 1..=count {
         let res_title = store.get(format!("{}_{}", PREFIX_TASK_TITLE, id))?;
         let res_completed = store.get(format!("{}_{}", PREFIX_TASK_COMPLETED, id))?;
         todos.push(todo::Todo {
