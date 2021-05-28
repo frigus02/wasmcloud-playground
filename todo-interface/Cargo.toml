@@ -1,6 +1,6 @@
 [package]
 name = "todo-interface"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Jan Kühle <jan.kuehle@codecentric.de>"]
 edition = "2018"
 
