@@ -1,0 +1,17 @@
+[package]
+name = "todo-interface"
+version = "0.1.0"
+authors = ["Jan Kühle <jan.kuehle@codecentric.de>"]
+edition = "2018"
+
+[features]
+default = ["guest"]
+guest = []
+
+[dependencies]
+lazy_static = "1.4.0"
+rmp-serde = "0.15.4"
+serde = { version = "1.0.126", features = ["derive"] }
+serde_bytes = "0.11.5"
+serde_json = "1.0.64"
+wapc-guest = "0.4.0"

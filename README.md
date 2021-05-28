@@ -15,6 +15,12 @@
   brew install wasmcloud wash
   ```
 
+- For code generation we also need the waPC CLI:
+
+  ```
+  brew install wapc/tap/wap
+  ```
+
 ## Start the app
 
 ```sh

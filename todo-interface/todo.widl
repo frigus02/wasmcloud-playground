@@ -1,0 +1,25 @@
+namespace "todo"
+
+interface {
+	"""
+	Create a new todo. Returns the id of the new todo.
+	"""
+	Create{title: string}: u32
+
+	"""
+	List all todos. The dummy parameter is necessary because a the code
+	generator seems to have problems if the method has no params.
+	"""
+	List{dummy: bool}: [Todo]
+
+	"""
+	Mark the todo with the given id as completed.
+	"""
+	MarkCompleted{id: u32}
+}
+
+type Todo {
+	id: u32
+	title: string @notEmpty
+	completed: bool
+}
