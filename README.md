@@ -21,9 +21,12 @@
 # 1. Build the API
 cd api && make build
 
-# 2. Start the host
-cd host && make run
+# 2. Start inside wash (ACTOR_MODULE_KEY is visible after the make build command above)
+wash up
+ctl start actor api/target/wasm32-unknown-unknown/debug/api_s.wasm
+ctl start provider wasmcloud.azurecr.io/httpserver:0.12.1
+ctl link (ACTOR_MODULE_KEY) VAG3QITQQ2ODAOWB5TTQSDJ53XK3SHBEIFNK4AYJ5RKAX2UNSCAPHA5M wasmcloud:httpserver PORT=8080
 
 # 3. Call the API
-curl localhost:8081
+curl localhost:8080
 ```
