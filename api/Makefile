@@ -1,29 +1,19 @@
 .DEFAULT_GOAL:=help
 DEBUG = target/wasm32-unknown-unknown/debug
 RELEASE = target/wasm32-unknown-unknown/release
-KEYDIR = ../.keys
-
-keys:
-	@$(MAKE) -C .. keys
 
 .PHONY: build
-build: keys ## Debug build
+build: ## Debug build
 	cargo build
 	wash claims sign \
-		--issuer $(KEYDIR)/account.nk \
-		--subject $(KEYDIR)/module-api.nk \
-		--http_server \
 		$(DEBUG)/api.wasm \
 		--name api
 	wash claims inspect $(DEBUG)/api_s.wasm
 
 .PHONY: release
-release: keys ## Release build
+release: ## Release build
 	cargo build --release
 	wash claims sign \
-		--issuer $(KEYDIR)/account.nk \
-		--subject $(KEYDIR)/module-api.nk \
-		--http_server \
 		$(RELEASE)/api.wasm \
 		--name api
 	wash claims inspect $(RELEASE)/api_s.wasm

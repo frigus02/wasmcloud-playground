@@ -1,18 +1,16 @@
-extern crate wascc_actor as actor;
-
-use actor::prelude::*;
 use serde_json::json;
+use wapc_guest as guest;
+use wasmcloud_actor_core as actor;
+use wasmcloud_actor_http_server as http;
 
-actor_handlers! {
-    codec::http::OP_HANDLE_REQUEST => hello_world,
-    codec::core::OP_HEALTH_REQUEST => health
+use guest::prelude::*;
+
+#[actor::init]
+fn init() {
+    http::Handlers::register_handle_request(hello_world);
 }
 
-fn hello_world(_payload: codec::http::Request) -> HandlerResult<codec::http::Response> {
+fn hello_world(_req: http::Request) -> HandlerResult<http::Response> {
     let result = json!({ "hello": "world", "data": 21});
-    Ok(codec::http::Response::json(result, 200, "OK"))
-}
-
-fn health(_req: codec::core::HealthRequest) -> HandlerResult<()> {
-    Ok(())
+    Ok(http::Response::json(&result, 200, "OK"))
 }

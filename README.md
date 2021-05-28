@@ -11,7 +11,8 @@
 - We need `wash` (the WebAssembly shell) to generate keys and sign our modules:
 
   ```
-  cargo install --git https://github.com/wasmcloud/wash --tag v0.1.18
+  brew tap wasmcloud/wasmcloud
+  brew install wasmcloud wash
   ```
 
 ## Start the app
