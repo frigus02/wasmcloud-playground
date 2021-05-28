@@ -27,9 +27,13 @@
 # 1. Build the API
 cd api && make build
 
-# 2. Start host (API_ACTOR is the module key visible after the above make build command)
-API_ACTOR=??? wasmcloud --manifest ./manifest.yaml
+# 2. Build the Todo actor
+cd todo && make build
 
-# 3. Call the API
+# 3. Start host (API_ACTOR is the module key visible after the above make build command)
+docker run -d -p 6379:6379 redis
+API_ACTOR=??? TODO_ACTOR=??? wasmcloud --manifest ./manifest.yaml
+
+# 4. Call the API
 curl localhost:8080
 ```

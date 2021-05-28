@@ -7,7 +7,8 @@ build: ## Debug build
 	cargo build
 	wash claims sign \
 		$(DEBUG)/todo.wasm \
-		--name todo
+		--name todo \
+		--call-alias todo
 	wash claims inspect $(DEBUG)/todo_s.wasm
 
 .PHONY: release
@@ -15,7 +16,8 @@ release: ## Release build
 	cargo build --release
 	wash claims sign \
 		$(RELEASE)/todo.wasm \
-		--name todo
+		--name todo \
+		--call-alias todo
 	wash claims inspect $(RELEASE)/todo_s.wasm
 
 .PHONY: help

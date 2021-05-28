@@ -4,7 +4,9 @@
 name = "api"
 version = "0.0.1"
 dependencies = [
+ "serde",
  "serde_json",
+ "todo-interface",
  "wapc-guest",
  "wasmcloud-actor-core",
  "wasmcloud-actor-http-server",
@@ -153,6 +155,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-xid",
+]
+
+[[package]]
+name = "todo-interface"
+version = "0.0.1"
+dependencies = [
+ "lazy_static",
+ "rmp-serde",
+ "serde",
+ "serde_bytes",
+ "serde_json",
+ "wapc-guest",
 ]
 
 [[package]]
