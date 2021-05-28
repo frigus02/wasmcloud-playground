@@ -1,0 +1,13 @@
+---
+labels:
+    sample: wasm-cloud-todo-mvc
+actors:
+    - ./api/target/wasm32-unknown-unknown/debug/api_s.wasm
+capabilities:
+    - image_ref: wasmcloud.azurecr.io/httpserver:0.12.1
+links:
+    - actor: ${API_ACTOR:thereisnodefault}
+      contract_id: wasmcloud:httpserver
+      provider_id: VAG3QITQQ2ODAOWB5TTQSDJ53XK3SHBEIFNK4AYJ5RKAX2UNSCAPHA5M
+      values:
+          PORT: "8080"
