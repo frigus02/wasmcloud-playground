@@ -21,19 +21,18 @@
   brew install wapc/tap/wap
   ```
 
+- For data storage we need a local Redis instance:
+
+  ```
+  docker run -d -p 6379:6379 --name todo-redis redis
+  ```
+
 ## Start the app
 
 ```sh
-# 1. Build the API
-cd api && make build
+# 1. Compile modules and start them in wasmcloud
+make run
 
-# 2. Build the Todo actor
-cd todo && make build
-
-# 3. Start host (API_ACTOR is the module key visible after the above make build command)
-docker run -d -p 6379:6379 redis
-API_ACTOR=??? TODO_ACTOR=??? wasmcloud --manifest ./manifest.yaml
-
-# 4. Call the API
+# 2. Call the API
 curl localhost:8080
 ```
