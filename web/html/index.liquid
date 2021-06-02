@@ -6,9 +6,9 @@
 <body>
 	<h1>Todos</h1>
 	<ul>
-		{{#each .}}
-		<li>{{id}} {{title}} {{completed}}</li>
-		{{/each}}
+		{% for todo in todos %}
+			<li>{{ todo.id }} {{ todo.title }} {{ todo.completed }}</li>
+		{% endfor %}
 	</ul>
 </body>
 </html>

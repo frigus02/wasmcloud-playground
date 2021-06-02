@@ -1,4 +1,4 @@
-use html_escape::encode_text;
+use once_cell::sync::OnceCell;
 use todo_interface as todo;
 use wapc_guest as guest;
 use wasmcloud_actor_core as actor;
@@ -8,8 +8,14 @@ use guest::prelude::*;
 
 const TODO_ACTOR: &str = "todo";
 
+static TEMPLATE_INDEX: OnceCell<liquid::Template> = OnceCell::new();
+
 #[actor::init]
 fn init() {
+    let parser = liquid::ParserBuilder::with_stdlib().build().unwrap();
+    let template_index = parser.parse(include_str!("../html/index.liquid")).unwrap();
+    let _ = TEMPLATE_INDEX.set(template_index);
+
     http::Handlers::register_handle_request(handle_request);
 }
 
@@ -22,37 +28,11 @@ fn handle_request(req: http::Request) -> HandlerResult<http::Response> {
     }
 
     let todos = todo::host(TODO_ACTOR).list(true)?;
+    let globals = liquid::object!({ "todos": todos });
+    let body = TEMPLATE_INDEX.get().unwrap().render(&globals)?;
 
     let mut res = http::Response::ok();
     res.header.insert("content-type".into(), "text/html".into());
-    res.body = render_index(todos).into();
+    res.body = body.into();
     Ok(res)
-}
-
-fn render_index(todos: Vec<todo::Todo>) -> String {
-    format!(
-        "<!DOCTYPE html>
-        <html>
-            <head>
-                <title>wasmcloud Playground</title>
-            </head>
-            <body>
-                <h1>Todos</h1>
-                <ul>{}</ul>
-            </body>
-        </html>",
-        todos
-            .into_iter()
-            .map(render_todo_list_item)
-            .collect::<String>()
-    )
-}
-
-fn render_todo_list_item(todo: todo::Todo) -> String {
-    format!(
-        "<li>{} {} {}</li>",
-        todo.id,
-        encode_text(&todo.title),
-        todo.completed
-    )
 }
