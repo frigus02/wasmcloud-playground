@@ -8,7 +8,7 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
-handlebars = "4.0.0"
+html-escape = "0.2.9"
 todo-interface = { path = "../todo-interface" }
 wapc-guest = "0.4.0"
 wasmcloud-actor-core = { version = "0.2.3", features = ["guest"] }

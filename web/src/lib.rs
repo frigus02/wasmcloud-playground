@@ -1,4 +1,4 @@
-use handlebars::Handlebars;
+use html_escape::encode_text;
 use todo_interface as todo;
 use wapc_guest as guest;
 use wasmcloud_actor_core as actor;
@@ -23,11 +23,36 @@ fn handle_request(req: http::Request) -> HandlerResult<http::Response> {
 
     let todos = todo::host(TODO_ACTOR).list(true)?;
 
-    let reg = Handlebars::new();
-    let body = reg.render_template(include_str!("../html/index.hb"), &todos)?;
-
     let mut res = http::Response::ok();
     res.header.insert("content-type".into(), "text/html".into());
-    res.body = body.into();
+    res.body = render_index(todos).into();
     Ok(res)
+}
+
+fn render_index(todos: Vec<todo::Todo>) -> String {
+    format!(
+        "<!DOCTYPE html>
+        <html>
+            <head>
+                <title>wasmcloud Playground</title>
+            </head>
+            <body>
+                <h1>Todos</h1>
+                <ul>{}</ul>
+            </body>
+        </html>",
+        todos
+            .into_iter()
+            .map(render_todo_list_item)
+            .collect::<String>()
+    )
+}
+
+fn render_todo_list_item(todo: todo::Todo) -> String {
+    format!(
+        "<li>{} {} {}</li>",
+        todo.id,
+        encode_text(&todo.title),
+        todo.completed
+    )
 }
