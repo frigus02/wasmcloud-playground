@@ -9,6 +9,8 @@ use guest::prelude::*;
 const TODO_ACTOR: &str = "todo";
 
 static TEMPLATE_INDEX: OnceCell<liquid::Template> = OnceCell::new();
+const STYLES_INDEX: &str = include_str!("../html/styles/index.css");
+const SCRIPTS_INDEX: &str = include_str!("../html/scripts/index.js");
 
 #[actor::init]
 fn init() {
@@ -20,13 +22,15 @@ fn init() {
 }
 
 fn handle_request(req: http::Request) -> HandlerResult<http::Response> {
-    if req.path_segments().len() != 1
-        || !req.path_segments().first().unwrap().is_empty()
-        || req.method() != http::Method::Get
-    {
-        return Ok(http::Response::not_found());
+    match (req.method(), req.path.as_str()) {
+        (http::Method::Get, "") | (http::Method::Get, "/") => render_index(),
+        (http::Method::Get, "/styles/index.css") => render_styles_index(),
+        (http::Method::Get, "/scripts/index.js") => render_scripts_index(),
+        _ => Ok(http::Response::not_found()),
     }
+}
 
+fn render_index() -> HandlerResult<http::Response> {
     let todos = todo::host(TODO_ACTOR).list(true)?;
     let globals = liquid::object!({ "todos": todos });
     let body = TEMPLATE_INDEX.get().unwrap().render(&globals)?;
@@ -34,5 +38,19 @@ fn handle_request(req: http::Request) -> HandlerResult<http::Response> {
     let mut res = http::Response::ok();
     res.header.insert("content-type".into(), "text/html".into());
     res.body = body.into();
+    Ok(res)
+}
+
+fn render_styles_index() -> HandlerResult<http::Response> {
+    let mut res = http::Response::ok();
+    res.header.insert("content-type".into(), "text/css".into());
+    res.body = STYLES_INDEX.into();
+    Ok(res)
+}
+
+fn render_scripts_index() -> HandlerResult<http::Response> {
+    let mut res = http::Response::ok();
+    res.header.insert("content-type".into(), "application/javascript".into());
+    res.body = SCRIPTS_INDEX.into();
     Ok(res)
 }
