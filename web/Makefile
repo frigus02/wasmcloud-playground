@@ -4,19 +4,17 @@ RELEASE = target/wasm32-unknown-unknown/release
 
 .PHONY: build
 build: ## Debug build
-	cargo build
-	wash claims sign \
+	@cargo build
+	@wash claims sign \
 		$(DEBUG)/web.wasm \
 		--name web
-	wash claims inspect $(DEBUG)/web_s.wasm
 
 .PHONY: release
 release: ## Release build
-	cargo build --release
-	wash claims sign \
+	@cargo build --release
+	@wash claims sign \
 		$(RELEASE)/web.wasm \
 		--name web
-	wash claims inspect $(RELEASE)/web_s.wasm
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/
