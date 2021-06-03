@@ -29,10 +29,11 @@
 
 ## Start the app
 
-```sh
-# 1. Compile modules and start them in wasmcloud
-make run
+1. `make run` compiles the modules in release mode and starts them in wasmcloud
+1. Open your browser at http://localhost:8080
 
-# 2. Call the API
-curl localhost:8080
-```
+## Develop on the app
+
+1. `make watch` compiles the modules in debug mode, starts then in wash up and watches for changes
+1. Open your browser at http://localhost:8080
+1. Make changes in any of the modules and compile it with `make build`. The actor should be updated automatically. Reload the page in your browser to see the changes

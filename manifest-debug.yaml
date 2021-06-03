@@ -2,10 +2,10 @@
 labels:
     app: wasm-cloud-todo-mvc
 actors:
-    - ./api/target/wasm32-unknown-unknown/release/api_s.wasm
-    - ./front/target/wasm32-unknown-unknown/release/front_s.wasm
-    - ./todo/target/wasm32-unknown-unknown/release/todo_s.wasm
-    - ./web/target/wasm32-unknown-unknown/release/web_s.wasm
+    - ./api/target/wasm32-unknown-unknown/debug/api_s.wasm
+    - ./front/target/wasm32-unknown-unknown/debug/front_s.wasm
+    - ./todo/target/wasm32-unknown-unknown/debug/todo_s.wasm
+    - ./web/target/wasm32-unknown-unknown/debug/web_s.wasm
 capabilities:
     - image_ref: wasmcloud.azurecr.io/httpserver:0.12.1
       link_name: default

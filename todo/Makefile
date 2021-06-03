@@ -1,6 +1,8 @@
 .DEFAULT_GOAL:=help
 DEBUG = target/wasm32-unknown-unknown/debug
 RELEASE = target/wasm32-unknown-unknown/release
+VERSION = $$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[].version')
+REVISION = $$(test -f $(DEBUG)/todo_s.wasm && wash claims inspect $(DEBUG)/todo_s.wasm -o json | jq -r '.revision' || echo -1)
 
 .PHONY: build
 build: ## Debug build
@@ -8,6 +10,8 @@ build: ## Debug build
 	@wash claims sign \
 		$(DEBUG)/todo.wasm \
 		--name todo \
+		--ver $(VERSION) \
+		--rev $$(( $(REVISION) + 1)) \
 		--call-alias todo \
 		--keyvalue
 
@@ -17,6 +21,8 @@ release: ## Release build
 	@wash claims sign \
 		$(RELEASE)/todo.wasm \
 		--name todo \
+		--ver $(VERSION) \
+		--rev 0 \
 		--call-alias todo \
 		--keyvalue
 
