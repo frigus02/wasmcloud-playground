@@ -11,7 +11,7 @@ document
 			body: JSON.stringify({ title }),
 		});
 		if (res.ok) {
-			location.reload();
+			location = "/";
 		} else {
 			alert("Todo creation failed");
 		}
@@ -26,7 +26,7 @@ document
 			method: "PUT",
 		});
 		if (res.ok) {
-			location.reload();
+			location = "/";
 		} else {
 			alert("Todo completion failed");
 		}
