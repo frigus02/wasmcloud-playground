@@ -6,17 +6,15 @@ RELEASE = target/wasm32-unknown-unknown/release
 build: ## Debug build
 	@cargo build
 	@wash claims sign \
-		$(DEBUG)/web.wasm \
-		--name web \
-		--call-alias web
+		$(DEBUG)/front.wasm \
+		--name front
 
 .PHONY: release
 release: ## Release build
 	@cargo build --release
 	@wash claims sign \
-		$(RELEASE)/web.wasm \
-		--name web \
-		--call-alias web
+		$(RELEASE)/front.wasm \
+		--name front
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/

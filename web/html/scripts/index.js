@@ -6,7 +6,7 @@ document
 		const title = event.target.value;
 		if (!title.trim()) return;
 
-		const res = await fetch("//localhost:8080", {
+		const res = await fetch("/api", {
 			method: "POST",
 			body: JSON.stringify({ title }),
 		});
@@ -22,7 +22,7 @@ document
 	.addEventListener("click", async (event) => {
 		if (!event.target.matches(".toggle")) return;
 		const id = event.target.closest("[data-id]").dataset.id;
-		const res = await fetch(`//localhost:8080/${id}`, {
+		const res = await fetch(`/api/${id}`, {
 			method: "PUT",
 		});
 		if (res.ok) {

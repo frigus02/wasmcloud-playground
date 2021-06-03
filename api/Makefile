@@ -7,14 +7,16 @@ build: ## Debug build
 	@cargo build
 	@wash claims sign \
 		$(DEBUG)/api.wasm \
-		--name api
+		--name api \
+		--call-alias api
 
 .PHONY: release
 release: ## Release build
 	@cargo build --release
 	@wash claims sign \
 		$(RELEASE)/api.wasm \
-		--name api
+		--name api \
+		--call-alias api
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/

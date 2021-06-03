@@ -24,32 +24,21 @@ struct NewTodoResponse {
 }
 
 fn handle_request(req: http::Request) -> HandlerResult<http::Response> {
-    if req.path_segments().len() != 1 {
-        return Ok(http::Response::not_found());
-    }
-
-    let path = req.path_segments().first().unwrap().to_string();
-    if path.is_empty() {
-        match req.method() {
-            http::Method::Get => {
-                let todos = todo::host(TODO_ACTOR).list(true)?;
-                Ok(http::Response::json(todos, 200, "OK"))
-            }
-            http::Method::Post => {
-                let new_todo: NewTodoRequest = serde_json::from_slice(&req.body)?;
-                let id = todo::host(TODO_ACTOR).create(new_todo.title)?;
-                Ok(http::Response::json(NewTodoResponse { id }, 201, "Created"))
-            }
-            _ => Ok(http::Response::not_found()),
+    match (req.method(), req.path_segments().as_slice()) {
+        (http::Method::Get, [""]) => {
+            let todos = todo::host(TODO_ACTOR).list(true)?;
+            Ok(http::Response::json(todos, 200, "OK"))
         }
-    } else {
-        let id: u32 = path.parse()?;
-        match req.method() {
-            http::Method::Put => {
-                todo::host(TODO_ACTOR).mark_completed(id)?;
-                Ok(http::Response::json((), 204, "No Content"))
-            }
-            _ => Ok(http::Response::not_found()),
+        (http::Method::Post, [""]) => {
+            let new_todo: NewTodoRequest = serde_json::from_slice(&req.body)?;
+            let id = todo::host(TODO_ACTOR).create(new_todo.title)?;
+            Ok(http::Response::json(NewTodoResponse { id }, 201, "Created"))
         }
+        (http::Method::Put, [id]) => {
+            let id: u32 = id.parse()?;
+            todo::host(TODO_ACTOR).mark_completed(id)?;
+            Ok(http::Response::json((), 204, "No Content"))
+        }
+        _ => Ok(http::Response::not_found()),
     }
 }

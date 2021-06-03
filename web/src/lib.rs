@@ -22,10 +22,10 @@ fn init() {
 }
 
 fn handle_request(req: http::Request) -> HandlerResult<http::Response> {
-    match (req.method(), req.path.as_str()) {
-        (http::Method::Get, "") | (http::Method::Get, "/") => render_index(),
-        (http::Method::Get, "/styles/index.css") => render_styles_index(),
-        (http::Method::Get, "/scripts/index.js") => render_scripts_index(),
+    match (req.method(), req.path_segments().as_slice()) {
+        (http::Method::Get, [""]) => render_index(),
+        (http::Method::Get, ["styles", "index.css"]) => render_styles_index(),
+        (http::Method::Get, ["scripts", "index.js"]) => render_scripts_index(),
         _ => Ok(http::Response::not_found()),
     }
 }
@@ -50,7 +50,8 @@ fn render_styles_index() -> HandlerResult<http::Response> {
 
 fn render_scripts_index() -> HandlerResult<http::Response> {
     let mut res = http::Response::ok();
-    res.header.insert("content-type".into(), "application/javascript".into());
+    res.header
+        .insert("content-type".into(), "application/javascript".into());
     res.body = SCRIPTS_INDEX.into();
     Ok(res)
 }
