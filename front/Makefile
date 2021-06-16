@@ -21,6 +21,10 @@ release: ## Release build
 		--name front \
 		--ver $(VERSION) \
 		--rev 0
+	@wash reg push \
+		localhost:5000/front:$(VERSION) \
+		$(RELEASE)/front_s.wasm \
+		--insecure
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/

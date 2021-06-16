@@ -21,10 +21,10 @@
   brew install wapc/tap/wap
   ```
 
-- For data storage we need a local Redis instance:
+- For data storage we need a local Redis instance and we use a local Docker registry to store our signed modules:
 
   ```
-  docker run -d -p 6379:6379 --name todo-redis redis
+  docker compose up -d
   ```
 
 ## Start the app

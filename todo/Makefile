@@ -25,6 +25,10 @@ release: ## Release build
 		--rev 0 \
 		--call-alias todo \
 		--keyvalue
+	@wash reg push \
+		localhost:5000/todo:$(VERSION) \
+		$(RELEASE)/todo_s.wasm \
+		--insecure
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/

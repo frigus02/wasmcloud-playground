@@ -23,6 +23,10 @@ release: ## Release build
 		--ver $(VERSION) \
 		--rev 0 \
 		--call-alias web
+	@wash reg push \
+		localhost:5000/web:$(VERSION) \
+		$(RELEASE)/web_s.wasm \
+		--insecure
 
 .PHONY: help
 help: ## Display this help. Thanks to https://suva.sh/posts/well-documented-makefiles/

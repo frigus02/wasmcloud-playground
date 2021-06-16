@@ -8,7 +8,7 @@ run: ## Run modules in wasmcloud
 	$(MAKE) -C front release
 	$(MAKE) -C todo release
 	$(MAKE) -C web release
-	FRONT_ACTOR=$$(wash claims inspect -o json front/$(RELEASE)/front_s.wasm | jq -r .module) TODO_ACTOR=$$(wash claims inspect -o json todo/$(RELEASE)/todo_s.wasm | jq -r .module) wasmcloud --manifest ./manifest.yaml
+	FRONT_ACTOR=$$(wash claims inspect -o json front/$(RELEASE)/front_s.wasm | jq -r .module) TODO_ACTOR=$$(wash claims inspect -o json todo/$(RELEASE)/todo_s.wasm | jq -r .module) wasmcloud --manifest ./manifest.yaml --allowed-insecure localhost:5000
 
 .PHONY: watch
 watch: ## Run modules in wash cli watching them for changes
